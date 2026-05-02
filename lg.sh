@@ -83,7 +83,7 @@ case "$arg_loglevel" in
         [[ -z "$arg_logstr" ]] && exit 0
 
         echo "$arg_loglevel $(date +"%H:%M @ %S.%3N") $arg_loglevel $prefix$arg_logstr" >> "$logpath" 2>/dev/null
-        [ "$arg_loglevel" == E ] && echo "$arg_logname $prefix error: $arg_logstr"
+        [ "$arg_loglevel" == E ] && echo "$arg_logname ${prefix}error: $arg_logstr"
         ;;
 esac
 
