@@ -10,9 +10,9 @@ To enable logging, `$LGENABLE` must be set to 1 (If set to 0 or unset, `lg` will
 
 ``` sh
 lg start
-lg . "basic info updated"
+lg . "quick info update"
 lg F "function_x was called"
-lg I "received arguments[$args]"
+lg I "important info here"
 lg finish
 ```
 
@@ -21,17 +21,17 @@ The start and finish commands create a much shorter line and thus create visual 
 lg E "expected A but got B" # warning: this will write to stdout
 ```
 
-Logs are written to `$XDG_STATE_HOME/logs/`
+Logs are written to `$XDG_STATE_HOME/logs/`.
 
 ### Viewing
 
 This script also exposes some options to allow users to easily manipulate log files:
 ``` sh
-lg view myprogram # opens the logfile for `myprogram` using less
-lg tail myprogram # prints last 20 lines
-lg watch myprogram # uses `watch` to continuosly show the last 50 lines
-lg clear myprogram # clears the log file
-lg clear all # clears all log files in $XDG_STATE_HOME/logs
+lg "view"  program # opens the logfile for `program` using less
+lg "tail"  program # prints last 20 lines
+lg "watch" program # uses `watch` to continuously show the last 50 lines
+lg "clear" program # clears the log file
+lg "clear" all # clears all log files in $XDG_STATE_HOME/logs
 ```
 
 ## Installation
@@ -53,7 +53,7 @@ environment.systemPackages = [ inputs.lg.packages.${system}.default ];
 home.packages = [ inputs.lg.packages.${system}.default ];
 ```
 
-You may also use an overlay to add `lg` to the `pkgs` attribute set:
+You may alternatively use an overlay to add `lg` to the `pkgs` attribute set:
 ``` nix
 # flake.nix
 outputs.nixosConfigurations.${hostname} = nixpkgs.lib.nixosSystem.modules = [{
@@ -68,4 +68,4 @@ environment.systemPackages = [ pkgs.lg ];
 
 ### Otherwise
 
-Download the [shellscript](lg.sh), and install it however you usually would.
+Download the [shellscript](lg.sh), add a shebang, and install it however you usually would.
