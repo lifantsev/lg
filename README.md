@@ -38,32 +38,22 @@ lg "clear" all # clears all log files in $XDG_STATE_HOME/logs
 
 ### Nix Flake
 
-Nix flake users can just add this flake as an input:
+Nix flake users can just add this flake as an input, and use the nixosModule to add `pkgs.lg` and install:
 ``` nix
 # flake.nix
 inputs.lg.url = "github:lifantsev/lg";
+
+# configuration.nix
+imports = [ inputs.lg.nixosModules.default ]; # adds pkgs.lg (using overlays) & installs it to systemPackages
 ```
 
-Then install the package:
+Or install the package manually, without the nixosModule:
 ``` nix
 # configuration.nix
 environment.systemPackages = [ inputs.lg.packages.${system}.default ];
 
 # or home.nix
 home.packages = [ inputs.lg.packages.${system}.default ];
-```
-
-You may alternatively use an overlay to add `lg` to the `pkgs` attribute set:
-``` nix
-# flake.nix
-outputs.nixosConfigurations.${hostname} = nixpkgs.lib.nixosSystem.modules = [{
-    nixpkgs.overlays = [(final: prev: {
-        lg = inputs.lg.packages.${system}.default;
-    })]
-}]
-
-# then in configuration.nix
-environment.systemPackages = [ pkgs.lg ];
 ```
 
 ### Otherwise

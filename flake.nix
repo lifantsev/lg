@@ -5,9 +5,17 @@
         nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
     };
 
-    outputs = { nixpkgs, ... }: let
+    outputs = { self, nixpkgs, ... }: let
         systems = [ "aarch64-linux" "x86_64-linux" ];
     in {
+        nixosModules.default = { pkgs, ... }: {
+            nixpkgs.overlays = [(final: prev: {
+                lg = self.packages.${final.system}.default;
+            })];
+
+            environment.systemPackages = [ pkgs.lg ];
+        };
+
         packages = nixpkgs.lib.genAttrs systems (system: let
             pkgs = import nixpkgs { inherit system; };
         in {
