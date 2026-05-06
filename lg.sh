@@ -31,10 +31,10 @@ function read_logstr() {
 }
 
 case "$1" in
-    "view")  arg_action="view"  ; read_logname "${2:-}" ;;
-    "tail")  arg_action="tail"  ; read_logname "${2:-}" ;;
-    "watch") arg_action="watch" ; read_logname "${2:-}" ;;
-    "clear") arg_action="clear" ; read_logname "${2:-}" ;;
+    "view"|"v")  arg_action="view"  ; read_logname "${2:-}" ;;
+    "tail"|"t")  arg_action="tail"  ; read_logname "${2:-}" ;;
+    "watch"|"w") arg_action="watch" ; read_logname "${2:-}" ;;
+    "clear"|"c") arg_action="clear" ; read_logname "${2:-}" ;;
     *) 
         [ -z "${LGENABLE:-}" ] && LGENABLE=0
         (( ! LGENABLE )) && exit 0 # immediately exit if logging is disabled

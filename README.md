@@ -16,7 +16,7 @@ lg I "important info here"
 lg finish
 ```
 
-The start and finish commands create a much shorter line and thus create visual breaks in the log file. Any other log must have a log level (arg 1) and a log string (arg 2). These types of logs include a timestamp in the logfile. There is a special log level `E`, which will cause logs to be written not only to the logfile but also to stdout:
+The start and finish commands create a much shorter line and thus create visual breaks in the log file. Any other log must have a log level (capital letter in arg 1) and a log string (arg 2). These types of logs include a timestamp in the logfile. There is a special log level `E`, which will cause logs to be written not only to the logfile but also to stdout:
 ``` sh
 lg E "expected A but got B" # warning: this will write to stdout
 ```
@@ -27,11 +27,11 @@ Logs are written to `$XDG_STATE_HOME/logs/`.
 
 This script also exposes some options to allow users to easily manipulate log files:
 ``` sh
-lg "view"  program # opens the logfile for `program` using less
-lg "tail"  program # prints last 20 lines
-lg "watch" program # uses `watch` to continuously show the last 50 lines
-lg "clear" program # clears the log file
-lg "clear" all # clears all log files in $XDG_STATE_HOME/logs
+lg "view|v"  program # opens the logfile for `program` using less
+lg "tail|t"  program # prints last 20 lines
+lg "watch|w" program # uses `watch` to continuously show the last 50 lines
+lg "clear|c" program # clears the log file
+lg "clear|c" all # clears all log files in $XDG_STATE_HOME/logs
 ```
 
 ## Installation
