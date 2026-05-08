@@ -75,8 +75,15 @@ prefix=""
 [ -n "${LGSPEC:-}" ] && prefix="$LGSPEC: "
 
 case "$arg_loglevel" in
-    "start"|"finish")
-        echo "$prefix$arg_loglevel" >> "$logpath" 2>/dev/null
+    "start")
+        echo "${prefix}start $(date +"%S.%3N")" >> "$logpath" 2>/dev/null
+        ;;
+    "finish")
+        tstart="$(cat "$logpath" | grep "^${prefix}start " | sed "s|^${prefix}start ||" | tail -n 1)"
+        tfin="$(cat "$logpath" | grep -v "^${prefix}start \|^${prefix}finish " | tail -n 1 | awk '{ print $4 }')"
+        diff="$(echo "$tfin - $tstart" | bc)"
+        echo "${prefix}finish $diff" >> "$logpath" 2>/dev/null
+        echo >> "$logpath" 2>/dev/null
         ;;
     *)
         if [[ "$arg_logstr" == "-" ]]; then arg_logstr="$(cat)"; fi

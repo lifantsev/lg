@@ -28,6 +28,10 @@
 
                 inputs = [
                     pkgs.coreutils
+                    pkgs.gnugrep
+                    pkgs.gawk
+                    pkgs.gnused
+                    pkgs.bc
                     pkgs.procps
                     pkgs.less
                 ];
