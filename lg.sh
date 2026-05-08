@@ -41,19 +41,23 @@ case "$1" in
         arg_loglevel="$1" ; read_logstr "${2:-}" ; read_logname "${LGSTEM:-}";;
 esac
 
+logpath="$LGPATH/$arg_logname.log"
+
 function check_logname() {
     if [[ "$arg_action" == "clear" ]] && [[ "$arg_logname" == "all" ]]; then
         return
     else
-        if ! [[ -f "$LGPATH/$arg_logname.log" ]]; then
-            echo "lg error: specified logfile[$LGPATH/$arg_logname.log] does not exist"
-            exit 1
+        if ! [[ -f "$logpath" ]]; then
+            if [[ -n "$arg_action" ]]; then
+                echo "lg error: specified logfile[$logpath] does not exist"
+                exit 1
+            else
+                echo -n > "$logpath"
+            fi
         fi
     fi
 }
 check_logname
-
-logpath="$LGPATH/$arg_logname.log"
 
 if [ -n "$arg_action" ]; then
     case "$arg_action" in
