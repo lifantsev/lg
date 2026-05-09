@@ -1,6 +1,8 @@
 # lg
 
-A simple script for reading and writing log files.
+A simple set of scripts for reading and writing log files.
+
+- [lg](#logging), [lga](#lga), [lge](#lge)
 
 ## Usage
 
@@ -34,6 +36,14 @@ lg "clear|c" program # clears the log file
 lg "clear|c" all # clears all log files in $XDG_STATE_HOME/logs
 ```
 
+### lga
+
+A secondary script `lga` is provided. The a stands for asynchronous, it forks a background process that completes the logging, which makes scripts faster. It has the same interface as `lg` for [logging](#logging) but does not provide [viewing functionality](#viewing). Also, it never prints to stdout, even if given the 'E' log level.
+
+### lge
+
+A third script `lge` is provided. The e stands for error. Running `lge "my error"` is similar to `lg E "my error"` except it uses [lga](#lga) to write to the logfile, making it slightly faster. It prints an appropriate error message to stdout, unlike [lga](#lga).
+
 ## Installation
 
 ### Nix Flake
@@ -44,13 +54,18 @@ Nix flake users can just add this flake as an input, and use the nixosModule to 
 inputs.lg.url = "github:lifantsev/lg";
 
 # configuration.nix
-imports = [ inputs.lg.nixosModules.default ]; # adds pkgs.lg (using overlays) & installs it to systemPackages
+imports = [ inputs.lg.nixosModules.default ]; # adds pkgs.lg, pkgs.lga, and pkgs.lge (using overlays) & installs to systemPackages
 ```
 
-Or install the package manually, without the nixosModule:
+Or install the packages manually, without the nixosModule:
 ``` nix
 # configuration.nix
-environment.systemPackages = [ inputs.lg.packages.${system}.default ];
+environment.systemPackages = [
+    inputs.lg.packages.${system}.default # alias for `lg`
+    # inputs.lg.packages.${system}.lg
+    inputs.lg.packages.${system}.lga
+    inputs.lg.packages.${system}.lge
+];
 
 # or home.nix
 home.packages = [ inputs.lg.packages.${system}.default ];
@@ -58,4 +73,4 @@ home.packages = [ inputs.lg.packages.${system}.default ];
 
 ### Otherwise
 
-Download the [shellscript](lg.sh), add a shebang, and install it however you usually would.
+Download whichever shellscript you want, add a shebang, and install it however you usually would. Note that `lge` depends on `lga`, but `lga` is standalone (doesn't depend on `lg`).
