@@ -32,9 +32,11 @@
     fi
 
     if [[ "$loglevel" == "finish" ]]; then
-        tstart="$(cat "$logpath" | grep "^${prefix}start " | sed "s|^${prefix}start ||" | tail -n 1)"
         n2="[0-9][0-9]"
-        tfin="$(cat "$logpath" | grep -v "^${prefix}start \|^${prefix}finish " | grep "$n2:$n2 @ $n2\.${n2}[0-9]" | tail -n 1 | awk '{ print $4 }')"
+        n3="[0-9][0-9][0-9]"
+
+        tstart="$(cat "$logpath" | grep "${prefix}start $n2\.$n3" | sed "s|.*${prefix}start ||" | tail -n 1)"
+        tfin="$(cat "$logpath" | grep -v "^${prefix}start \|^${prefix}finish " | grep "$n2:$n2 @ $n2\.$n3" | tail -n 1 | awk '{ print $4 }')"
         diff="$(echo "$tfin - $tstart" | bc)"
 
         printf "$col_purple" >> "$logpath"
